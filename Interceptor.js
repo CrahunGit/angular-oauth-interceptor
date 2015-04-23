@@ -1,4 +1,5 @@
-angular.module('Interceptors', [])
+//Interceptor que añade las cabecera oauth a todas las peticiones
+angular.module('Hellfood.Interceptors', [])
      //Interceptors
      .factory('AuthInterceptor',
         [
@@ -11,10 +12,9 @@ angular.module('Interceptors', [])
                 return {
                     //Put auth header for each request except token request
                     request: function (config) {
-                        if (config.url.indexOf(URL_TOKEN) === -1) {
+                        if (config.url.indexOf(URL_TOKEN) === -1 && $window.sessionStorage != null && $window.sessionStorage.getItem('token') != null) {
                             var token = $window.sessionStorage.getItem('token');
                             config.headers.Authorization = 'Bearer ' + token;
-                            retries = 0;
                         }
                         return config;
                     },
